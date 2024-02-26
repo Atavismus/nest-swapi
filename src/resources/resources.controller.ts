@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { Resources } from './interfaces/resources.interface';
 
-@Controller('resources')
+@Controller('api/get')
 /**
  * Get an entry by resource and id or get all entries from a resource if no id parameter
  * @param {string} resource
