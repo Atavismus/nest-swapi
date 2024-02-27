@@ -1,6 +1,16 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, ParseEnumPipe } from '@nestjs/common';
 import { ResourcesService } from './resources.service';
 import { Resources } from './interfaces/resources.interface';
+import { OptionalIntPipe } from 'src/customPipes/optionalInt';
+
+enum ResourceType {
+  Films = 'films',
+  People = 'people',
+  Planets = 'planets',
+  Species = 'species',
+  Starships = 'starships',
+  Vehicles = 'vehicles',
+}
 
 @Controller('api')
 /**
@@ -14,9 +24,9 @@ export class ResourcesController {
   constructor(private resourcesService: ResourcesService) {}
   @Get('get')
   async find(
-    @Query('resource') resource: string,
-    @Query('id') id?: string,
-    @Query('page') page?: string,
+    @Query('resource', new ParseEnumPipe(ResourceType)) resource: string,
+    @Query('id', OptionalIntPipe) id?: number,
+    @Query('page', OptionalIntPipe) page?: number,
   ): Promise<Resources[]> {
     return this.resourcesService.find(resource, id, page);
   }
@@ -30,9 +40,9 @@ export class ResourcesController {
    */
   @Get('search')
   async search(
-    @Query('resource') resource: string,
+    @Query('resource', new ParseEnumPipe(ResourceType)) resource: string,
     @Query('search') search: string,
-    @Query('page') page?: string,
+    @Query('page', OptionalIntPipe) page?: number,
   ): Promise<Resources[]> {
     return this.resourcesService.search(resource, search, page);
   }

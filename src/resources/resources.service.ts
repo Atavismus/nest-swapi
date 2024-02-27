@@ -6,14 +6,14 @@ import axios from 'axios';
 export class ResourcesService {
   async find(
     resource: string,
-    id?: string,
-    page?: string,
+    id?: number,
+    page?: number,
   ): Promise<Resources[]> {
-    id = id ?? '';
-    page = page ? `?page=${page}` : '';
+    const idParam: string = id ? id.toString() : '';
+    const pageParam: string = page ? `?page=${page}` : '';
     try {
       const response = await axios.get(
-        `${process.env.API_URL}${resource}/${page}${id}`,
+        `${process.env.API_URL}${resource}/${pageParam}${idParam}`,
       );
       return response.data;
     } catch (error) {
@@ -25,12 +25,12 @@ export class ResourcesService {
   async search(
     resource: string,
     search: string,
-    page?: string,
+    page?: number,
   ): Promise<Resources[]> {
-    page = page ? `&page=${page}` : '';
+    const pageParam: string = page ? `&page=${page}` : '';
     try {
       const result = await axios.get(
-        `${process.env.API_URL}${resource}/?search=${search}${page}`,
+        `${process.env.API_URL}${resource}/?search=${search}${pageParam}`,
       );
       return result.data;
     } catch (error) {
